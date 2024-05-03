@@ -1,0 +1,5 @@
+res://scenes/main.tscn
+res://scenes/icon.tscn
+res://node_2d.tscn
+res://scripts/main.cs
+res://scripts/Map.cs

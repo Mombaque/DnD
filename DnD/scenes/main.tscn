@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://jq4i6ygmwm7y"]
+
+[ext_resource type="Script" path="res://scripts/Map.cs" id="1_puirp"]
+[ext_resource type="PackedScene" uid="uid://csy4oe2we6fi4" path="res://scenes/icon.tscn" id="2_a5sub"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_puirp")
+PackedScene = ExtResource("2_a5sub")

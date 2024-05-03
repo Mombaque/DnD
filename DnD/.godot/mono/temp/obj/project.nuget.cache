@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "hvlKYo3s2jpLgRm1+aSOiYy77gys0dY1N8/bcJ+avffEc3EP8G0x+CVNt469y6AJ7wwqsCP4+I7ZQnJZhIaLHg==",
+  "success": true,
+  "projectFilePath": "C:\\dev\\Godot\\DnD\\DnD\\DnD.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Diogo\\.nuget\\packages\\godot.sourcegenerators\\4.2.1\\godot.sourcegenerators.4.2.1.nupkg.sha512",
+    "C:\\Users\\Diogo\\.nuget\\packages\\godotsharp\\4.2.1\\godotsharp.4.2.1.nupkg.sha512",
+    "C:\\Users\\Diogo\\.nuget\\packages\\godotsharpeditor\\4.2.1\\godotsharpeditor.4.2.1.nupkg.sha512"
+  ],
+  "logs": []
+}
