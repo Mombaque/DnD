@@ -1,21 +1,27 @@
+using DnD.scripts.Interfaces.Godot;
+using DnD.scripts.Models;
+using DnD.scripts.Wrappers.Events;
 using Godot;
 using System;
+using System.Collections.Generic;
+
+namespace DnD.scripts;
 
 public partial class Map : Node2D
 {
-    public Vector2? FirstNode { get; set; } = null;
-    public Vector2? SecondNode { get; set; } = null;
     [Export]
     public PackedScene PackedScene { get; set; }
-    private bool _allNodesClicked => 
+    public Vector2? FirstNode { get; set; } = null;
+    public Vector2? SecondNode { get; set; } = null;
+    public List<Node2D> MapPoints { get; set; } = new List<Node2D>();
+
+
+    public bool AllNodesClicked => 
         FirstNode != null && SecondNode != null;
 
     public override void _Ready()
 	{
-        FirstNode = null;
-        SecondNode = null;
 
-        
     }
 
 	public override void _Process(double delta)
@@ -23,64 +29,32 @@ public partial class Map : Node2D
 
 	}
 
-	//public override void _Draw()
-	//{
-        //if (!_allNodesClicked)
-        //    return;
-
-        //DrawLine(
-        //    FirstNode.Value,
-        //    SecondNode.Value,
-        //    new Color(1, 0, 0),
-        //    5);
-
-        //FirstNode = null;
-        //SecondNode = null;
-    //}
-
-    public override void _Input(InputEvent @event)
+    public override void _Input(InputEvent inputEvent)
     {
-        if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed)
+        var inputWrapper = new InputEventWrapper(inputEvent);
+        HandleInput(new MapWrapper(this), inputWrapper);
+    }
+
+    public static void HandleInput(IMapWrapper mapWrapper, IInputEventWrapper eventWrapper)
+    {
+        if (eventWrapper.IsInputEventMouseButton() && eventWrapper.IsMouseButtonPressed())
+            HandleMouseButtonEvent(mapWrapper, eventWrapper.GetMouseButtonEventWrapper());
+    }
+
+    private static void HandleMouseButtonEvent(
+        IMapWrapper mapWrapper,
+        IMouseButtonEventWrapper mouseButtonEventWrapper)
+    {
+        if (mouseButtonEventWrapper.MouseButton == MouseButton.Right)
         {
-            HandleLeftMouseButton(mouseButton);
+            mapWrapper.ClearMapPoints();
+            return;
+        }        
+
+        if (mouseButtonEventWrapper.MouseButton == MouseButton.Left)
+        {
+            var clickedPosition = mouseButtonEventWrapper.Position;
+            mapWrapper.Spawn(clickedPosition);
         }
-    }
-
-    public void HandleLeftMouseButton(InputEventMouseButton mouseButton)
-    {
-        if (mouseButton.ButtonIndex != MouseButton.Left)
-            return;
-
-        var clickPosition = mouseButton.GlobalPosition;
-
-        FirstNode = FirstNode == null ? clickPosition : FirstNode;
-
-        SecondNode = FirstNode != clickPosition && SecondNode == null
-            ? clickPosition
-            : SecondNode;
-
-        GD.Print("First: " + FirstNode);
-        GD.Print("Second: " + SecondNode);
-
-        if (!_allNodesClicked)
-            return;
-
-        AddNode(FirstNode.Value);
-        AddNode(SecondNode.Value);
-
-        ResetNodesPositions();
-    }
-
-    private void AddNode(Vector2 position)
-    {
-        var icon = (Sprite2D)PackedScene.Instantiate();
-        icon.GlobalPosition = position;
-        AddChild(icon);
-    }
-
-    private void ResetNodesPositions()
-    {
-        FirstNode = null;
-        SecondNode = null;
     }
 }
